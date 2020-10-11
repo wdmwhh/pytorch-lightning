@@ -272,6 +272,10 @@ class CheckpointConnector:
             checkpoint['callbacks'] = callback_states
 
             # save optimizers
+
+            # Ensure optimizer state has been synced if necessary
+            self.trainer.accelerator_backend.sync_optim_state()
+
             optimizer_states = []
             for i, optimizer in enumerate(self.trainer.optimizers):
                 optimizer_states.append(optimizer.state_dict())
